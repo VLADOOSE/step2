@@ -9,8 +9,8 @@ public class JavaUnitConverterDemo {
         boolean q = false;
         System.out.println("Добро пожаловать в конвертер ед измерения" + "\n" +
                 "Введите строку в формате: category value from_unit to_unit" + "\n"
-        + " Для выхода введите q");
-        while(!q) {
+                + " Для выхода введите q");
+        while (!q) {
             try {
                 Scanner scanner = new Scanner(System.in);
                 String query = scanner.nextLine();
@@ -24,36 +24,40 @@ public class JavaUnitConverterDemo {
                     String toUnit = arrQuery[3].toUpperCase();
                     double res;
                     double value = Double.parseDouble(arrQuery[1]);
-                    if (category.equals("length")) {
-                        BaseConverter baseConverter = new LengthConverter();
-                        LengthUnit.valueOf(fromUnit).setNum(value);
-                        res = baseConverter.convert(LengthUnit.valueOf(fromUnit), LengthUnit.valueOf(toUnit));
-                    } else if (category.equals("temperature")) {
-                        BaseConverter baseConverter = new TemperatureConverter();
-                        TemperatureUnit.valueOf(fromUnit).setNum(value);
-                        res = baseConverter.convert(TemperatureUnit.valueOf(fromUnit), TemperatureUnit.valueOf(toUnit));
-                    } else if (category.equals("weight")) {
-                        BaseConverter baseConverter = new WeightConverter();
-                        WeightUnit.valueOf(fromUnit).setNum(value);
-                        res = baseConverter.convert(WeightUnit.valueOf(fromUnit), WeightUnit.valueOf(toUnit));
+                    switch (category) {
+                        case "length":
+                            BaseConverter<LengthUnit> lengthConverter = new LengthConverter<>();
+                            LengthUnit.valueOf(fromUnit).setNum(value);
+                            res = lengthConverter.convert(LengthUnit.valueOf(fromUnit), LengthUnit.valueOf(toUnit));
+                            break;
+                        case "temperature":
+                            BaseConverter<TemperatureUnit> temperatureConverter = new TemperatureConverter<>();
+                            TemperatureUnit.valueOf(fromUnit).setNum(value);
+                            res = temperatureConverter.convert(TemperatureUnit.valueOf(fromUnit), TemperatureUnit.valueOf(toUnit));
+                            break;
+                        case "weight":
+                            BaseConverter<WeightUnit> weightConverter = new WeightConverter<>();
+                            WeightUnit.valueOf(fromUnit).setNum(value);
+                            res = weightConverter.convert(WeightUnit.valueOf(fromUnit), WeightUnit.valueOf(toUnit));
+                            break;
 
-                    } else {
-                        throw new InvalidCategoryException("Неизвестная категория: " + category);
+                        default:
+                            throw new InvalidCategoryException("Неизвестная категория: " + category);
                     }
                     System.out.println(value + " " + fromUnit + " = " + res + " " + toUnit);
                 }
-            }catch(ArrayIndexOutOfBoundsException e){
+            } catch (ArrayIndexOutOfBoundsException e) {
                 e.printStackTrace();
                 System.err.println("Вы ввели строку в неправильном формате");
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
                 System.err.println("Вы ввели не число");
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 System.err.println("Вы ввели неправильные ед измерения");
             }
 
-            }
         }
     }
+}
 
