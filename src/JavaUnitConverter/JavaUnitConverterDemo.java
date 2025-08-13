@@ -47,13 +47,10 @@ public class JavaUnitConverterDemo {
                     System.out.println(value + " " + fromUnit + " = " + res + " " + toUnit);
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                e.printStackTrace();
                 System.err.println("Вы ввели строку в неправильном формате");
             } catch (NumberFormatException e) {
-                e.printStackTrace();
                 System.err.println("Вы ввели не число");
             } catch (IllegalArgumentException e) {
-                e.printStackTrace();
                 System.err.println("Вы ввели неправильные ед измерения");
             }
 
